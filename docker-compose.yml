@@ -1,4 +1,4 @@
-#version: '3.8'
+ersion: '3.8'
 
 services:
   # 1. El contenedor de tu Base de Datos
@@ -23,7 +23,8 @@ services:
       - "8000:80"
     # Le inyectamos la URL de conexión como variable de entorno
     environment:
-      - DATABASE_URL=postgresql+asyncpg://admin:superpassword@db:5432/saas_db
+      - DATABASE_URL=${DATABASE_URL}
+      - ENVIRONMENT=${ENVIRONMENT}
     # Le decimos que espere a que la DB arranque
     depends_on:
       - db
