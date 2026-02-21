@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.database import engine, Base
@@ -6,6 +7,9 @@ from app.routers import items, admin
 # ¡ESTA LÍNEA ES LA CLAVE!
 # Importamos models para que ItemDB se registre en Base.metadata
 from app import models 
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+is_production = ENVIRONMENT == "production"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -16,8 +20,14 @@ async def lifespan(app: FastAPI):
     # Ya NO usamos Base.metadata.create_all
     # Aquí en el futuro puedes poner lógica como cargar caché en Redis
     yield
-app = FastAPI(lifespan=lifespan)
-
+#app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    # Si es producción, asignamos None para apagar la ruta. Si no, usamos las rutas por defecto.
+    docs_url=None if is_production else "/docs",
+    redoc_url=None if is_production else "/redoc",
+    openapi_url=None if is_production else "/openapi.json"
+)
 # Prefix: Todas las rutas de items empezarán con /items
 app.include_router(items.router, prefix="/items", tags=["items"])
 
