@@ -8,7 +8,7 @@ from app.routers import items, admin
 # Importamos models para que ItemDB se registre en Base.metadata
 from app import models 
 
-ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "None")
 is_production = ENVIRONMENT == "production"
 
 @asynccontextmanager

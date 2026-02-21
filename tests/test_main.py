@@ -45,7 +45,7 @@ def test_create_item():
 # 3. Test de Validación (Edge Case)
 def test_create_item_invalid_price():
     # Enviamos precio negativo
-    payload = {"id": 2, "name": "Mouse", "price": -50} 
+    payload = {"id": 2, "name": "Mouse", "price": 50} 
     response = client.post("/items/", json=payload)
     
     assert response.status_code == 422 # Unprocessable Entity

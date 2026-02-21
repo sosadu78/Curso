@@ -21,6 +21,8 @@ services:
       - .:/code
     ports:
       - "8000:80"
+    env_file:
+      - .env
     # Le inyectamos la URL de conexión como variable de entorno
     environment:
       - DATABASE_URL=${DATABASE_URL}
