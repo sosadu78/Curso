@@ -1,0 +1,8 @@
+docker rm -f curso_api1
+
+docker build -t curso_api1 .
+
+docker run -d -p 8000:80 --name curso_api1 \
+  -v $(pwd)/app:/code/app \
+  curso_api1 \
+  uvicorn app.main:app --host 0.0.0.0 --port 80 --reload

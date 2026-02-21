@@ -1,0 +1,35 @@
+#version: '3.8'
+
+services:
+  # 1. El contenedor de tu Base de Datos
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: superpassword
+      POSTGRES_DB: saas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. El contenedor de tu API (El que ya construiste)
+  api:
+    build: .
+    # Montamos el volumen para el Hot Reload en Mac $(pwd)
+    volumes:
+      - .:/code
+    ports:
+      - "8000:80"
+    # Le inyectamos la URL de conexión como variable de entorno
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://admin:superpassword@db:5432/saas_db
+    # Le decimos que espere a que la DB arranque
+    depends_on:
+      - db
+    # Comando con Hot Reload activado
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload
+
+# Definimos el disco duro virtual para que la DB no pierda datos al apagarse
+volumes:
+  postgres_data:
