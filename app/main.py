@@ -37,3 +37,7 @@ app.include_router(admin.router, prefix="/admin", tags=["admin"])
 @app.get("/")
 async def root():
     return {"message": "API Hot Update Corriendo"}
+
+@app.get("/enviroment")
+async def root():
+    return {"enviroment": ENVIRONMENT}
