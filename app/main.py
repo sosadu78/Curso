@@ -23,7 +23,8 @@ async def lifespan(app: FastAPI):
 #app = FastAPI(lifespan=lifespan)
 app = FastAPI(
     lifespan=lifespan,
-    # Si es producción, asignamos None para apagar la ruta. Si no, usamos las rutas por defecto.
+    root_path="/curso",
+    #Si es producción, asignamos None para apagar la ruta. Si no, usamos las rutas por defecto.
     docs_url=None if is_production else "/docs",
     redoc_url=None if is_production else "/redoc",
     openapi_url=None if is_production else "/openapi.json"
